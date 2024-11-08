@@ -11,6 +11,7 @@ import com.hufudb.openhufu.rpc.Party;
 import com.hufudb.openhufu.rpc.grpc.OpenHuFuRpc;
 import io.grpc.ChannelCredentials;
 import io.grpc.ServerCredentials;
+import redis.clients.jedis.Jedis;
 
 public class OwnerConfig {
   public Party party;
@@ -25,6 +26,8 @@ public class OwnerConfig {
   public List<PojoPublishedTableSchema> tables;
   public Map<ProtocolType, ProtocolExecutor> librarys;
   public String implementorConfigPath;
+
+  public Jedis jedis;
   public OwnerConfig() {}
 
   public OwnerConfig(Party party, int port, String hostname, ExecutorService threadPool,

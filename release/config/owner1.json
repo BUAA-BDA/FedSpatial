@@ -8,6 +8,12 @@
     "url": "../dataset/sample/tpc-h/database0",
     "delimiter": "|"
   },
+  "redisconfig": {
+    "host" : "192.168.40.230",
+    "port": 31012,
+    "pwd": "Wlty*Ny1b!",
+    "database": 0
+  },
   "tables": [
     {
       "actualName": "customer",

@@ -16,10 +16,7 @@ import com.hufudb.openhufu.mpc.ProtocolFactory;
 import com.hufudb.openhufu.mpc.ProtocolType;
 import com.hufudb.openhufu.mpc.lib.LibraryConfig;
 import com.hufudb.openhufu.mpc.lib.LibraryLoader;
-import com.hufudb.openhufu.owner.adapter.Adapter;
-import com.hufudb.openhufu.owner.adapter.AdapterConfig;
-import com.hufudb.openhufu.owner.adapter.AdapterFactory;
-import com.hufudb.openhufu.owner.adapter.AdapterLoader;
+import com.hufudb.openhufu.owner.adapter.*;
 import com.hufudb.openhufu.proto.OpenHuFuService.OwnerInfo;
 import com.hufudb.openhufu.rpc.grpc.OpenHuFuOwnerInfo;
 import com.hufudb.openhufu.rpc.grpc.OpenHuFuRpc;
@@ -27,6 +24,7 @@ import io.grpc.TlsChannelCredentials;
 import io.grpc.TlsServerCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import redis.clients.jedis.Jedis;
 
 public class OwnerConfigFile {
   private static final int THREAD_NUM = 8;
@@ -41,6 +39,7 @@ public class OwnerConfigFile {
   public String trustcertpath;
   public List<PojoPublishedTableSchema> tables;
   public AdapterConfig adapterconfig;
+  public RedisConfig redisconfig;
   public List<LibraryConfig> libraryconfigs;
   public String implementorconfigpath;
   public OwnerConfigFile(int id, int port, int threadnum, String hostname, String privatekeypath,
@@ -148,6 +147,9 @@ public class OwnerConfigFile {
       throw new OpenHuFuException(ErrorCode.IMPLEMENTOR_CONFIG_FILE_PATH_NOT_SET);
     }
     config.implementorConfigPath = implementorconfigpath;
+    config.jedis = new Jedis(redisconfig.host, redisconfig.port);
+    config.jedis.auth(redisconfig.pwd);
+    config.jedis.select(redisconfig.database);
     return config;
   }
 }
